@@ -6,6 +6,10 @@
       "dom.iterable",
       "esnext"
     ],
+    "strictNullChecks": false,
+    "useUnknownInCatchVariables": false,
+    "types": [ "googlemaps" ],
+    "noImplicitAny": false,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

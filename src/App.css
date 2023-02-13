@@ -4,12 +4,12 @@
 }
 
 body {
-  background-color: #e09792;
-  overflow: auto;
+  background-color: #e9edc9;
+  overflow: hidden;
 }
 
 .header {
-  background-color: #F0122D;
+  background-color: #2a9d8f;
   font-size: 70px;
   font-weight: 600;
   padding: 2%;
@@ -28,6 +28,7 @@ body {
   justify-content: center;
   border-color: black;
   margin: 10px;
+  float: left;
 }
 
 .column {
@@ -71,10 +72,10 @@ label {
   text-align: center;
   border-radius: 100px;
   border-color: none;
-  color: #B4886B;
+  color: white;
   font-weight: bold;
   display: block;
-  background-color: #f2ece6;
+  background-color: #2a9d8f;
   width: auto;
   padding: 10px;
 }

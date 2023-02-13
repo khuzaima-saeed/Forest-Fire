@@ -1,9 +1,24 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const spawn = require('child_process').spawn;
+const port = 8000;
+var cors = require('cors')
+app.use(cors())
+const fs = require('fs');
+const path = require("path");
+
+const { spawn } = require('child_process');
+app.get("/readFile", (req, res) => {
+  fs.readFile("C:/Users/khuzaima.saeed/Downloads/Forest-Fire/public/sample.txt", "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send({ error: "An error occurred while reading the file." });
+    } else {
+      res.send({data});
+    }
+  });
+});
 
 app.get('/runscript', (req, res) => {
-  const script = spawn('python', ['-u', '/Users/khuzaima.saeed/my-app/server/script1.py']);
+  const script = spawn('python', ['script1.py']);
 
   script.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -15,10 +30,10 @@ app.get('/runscript', (req, res) => {
 
   script.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
-    res.send(`Script completed with code: ${code}`);
+    res.sendStatus(200);
   });
 });
 
-app.listen(8000, () => {
-  console.log('App listening on port 8000!');
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

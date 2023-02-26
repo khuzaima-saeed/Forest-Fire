@@ -8,7 +8,7 @@ const path = require("path");
 
 const { spawn } = require('child_process');
 app.get("/readFile", (req, res) => {
-  fs.readFile("C:/Users/khuzaima.saeed/Downloads/Forest-Fire/public/sample.txt", "utf8", (err, data) => {
+  fs.readFile("../public/sample.txt", "utf8", (err, data) => {
     if (err) {
       res.status(500).send({ error: "An error occurred while reading the file." });
     } else {

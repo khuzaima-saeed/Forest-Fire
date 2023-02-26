@@ -14,8 +14,10 @@ const MyComponent = () => {
   const [files, setFiles] = useState("");
   const [files2, setFiles2] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [data3, setData3] = useState([]);
   var coords = {}
-  var coords2 = {}
+  // var coords2 = {}
+  var windData = []
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -27,6 +29,32 @@ const MyComponent = () => {
         method: 'GET',
       });
   };
+
+  const fetchWeather = async () => {
+    const loc1 = [{
+      lat : 34.4819,
+      lng : 73.0833
+    }, {
+      lat : 34.5006,
+      lng : 72.8917
+    }]
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': 'b7a0804d9fmshbbc6d539b876283p11c6a8jsndf06f23581cc',
+        'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
+      }
+    };
+    for(let i = 0; i < loc1.length; i++){
+      await fetch(`https://open-weather13.p.rapidapi.com/city/latlon/${loc1[i].lat}/${loc1[i].lng}`, options)
+        .then(response => response.json())
+        .then(response => windData.push(response.wind))
+        .catch(err => console.error(err));
+      windData[i]["lat"] = loc1[i].lat
+      windData[i]["lng"] = loc1[i].lng
+   }
+   return windData;
+  }
 
   function handleFile (file) {
     return new Promise((resolve, reject) => {
@@ -59,6 +87,7 @@ const MyComponent = () => {
 
   const setCoords = async () => {
     let val = await fetchData();
+    let val2 = await fetchWeather();
     await myfunc(val.data);
     let header = "latitude,longitude,bright_ti4,scan,track,acq_date,acq_time,satellite,confidence,version,bright_ti5,frp,daynight";
     data.map((row, index) => (
@@ -72,24 +101,23 @@ const MyComponent = () => {
       coords[i][1] = num2
     }
     delete coords[len-1] 
-    console.log("these are coords", coords)
-    setData2(coords)
+    setData2([coords,val2])
   }
 
-  const setCoords2 = () => {
-    dataPred.map((row, index) => (
-      coords2[index] = [row.latitude, row.longitude]
-    ))
-    const len = Object.keys(coords2).length;
-    for (let i = 0; i < len; i++){
-      let num = Number(coords2[i][0]);
-      let num2 = Number(coords2[i][1]);
-      coords2[i][0] = num 
-      coords2[i][1] = num2
-    }
-    delete coords2[len-(len+1)] 
-    setPredData2(coords2)
-  }
+  // const setCoords2 = () => {
+  //   dataPred.map((row, index) => (
+  //     coords2[index] = [row.latitude, row.longitude]
+  //   ))
+  //   const len = Object.keys(coords2).length;
+  //   for (let i = 0; i < len; i++){
+  //     let num = Number(coords2[i][0]);
+  //     let num2 = Number(coords2[i][1]);
+  //     coords2[i][0] = num 
+  //     coords2[i][1] = num2
+  //   }
+  //   delete coords2[len-(len+1)] 
+  //   setPredData2(coords2)
+  // }
 
   const myfunc = async (res) => {
     if (!res) return;
@@ -149,7 +177,7 @@ const MyComponent = () => {
   } 
 
   const oneFunc  = async () => {
-    await handleClick();
+    await fetchWeather();
   }
 
   const twoFunc  = (e) => {

@@ -6,9 +6,12 @@ import React, { useState } from "react";
     const [selectedElement, setSelectedElement] = useState(null);
     const [activeMarker, setActiveMarker] = useState(null);
     const [showInfoWindow, setInfoWindowFlag] = useState(true);
-    console.log(locations)
+    const [selectedElement2, setSelectedElement2] = useState(null);
+    const [activeMarker2, setActiveMarker2] = useState(null);
+    const [showInfoWindow2, setInfoWindowFlag2] = useState(true);
     var temp = locations["locations"][0]
-    var temp2 = locations["locations"]
+    var temp2 = locations["locations"][0]
+    var temp3 = locations["locations"][1]
     if (temp === undefined) {
         return (
           <div style={{ height: '50vh', width: '100%' }}>
@@ -32,7 +35,7 @@ import React, { useState } from "react";
                 }
                 else {
                   let url = "http://maps.google.com/mapfiles/ms/icons/";
-                  url += "red" + "-dot.png";
+                  url += "firedept.png";
                   return (
                     <Marker
                       key={index}
@@ -42,7 +45,7 @@ import React, { useState } from "react";
                       }}
                       icon={{
                         url:url,
-                        scaledSize: new google.maps.Size(20, 20)
+                        scaledSize: new google.maps.Size(15, 15)
                       }}
                       onClick={(props, marker) => {
                         setSelectedElement(value);
@@ -52,6 +55,48 @@ import React, { useState } from "react";
                   );
                 }
               })}
+              {Object.values(temp3).map((value, index) => {
+                const svgMarker = {
+                  path: "M-1.547 12l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM0 0q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+                  fillColor: "blue",
+                  fillOpacity: 0.6,
+                  strokeWeight: 0,
+                  rotation: value.deg,
+                  scale: 3,
+                  anchor: new google.maps.Point(0, 20),
+                };
+                  return (
+                    <Marker
+                      key={index}
+                      position = {{
+                        lat: value.lat,
+                        lng: value.lng
+                      }}
+                      icon = {svgMarker}
+                      onClick={(props, marker) => {
+                        setSelectedElement2(value);
+                        setActiveMarker2(marker);
+                      }}
+                    />
+                  );
+              })}
+              {selectedElement2 ? (
+                <InfoWindow
+                  visible={showInfoWindow2}
+                  marker={activeMarker2}
+                  onCloseClick={() => {
+                    setSelectedElement2(null);
+                  }}
+                >
+                  <div>
+                    <p>Wind Speed: {selectedElement2.speed}</p>
+                    <p>Wind Direction: {selectedElement2.deg}</p>
+                    <p>Wind Gust: {selectedElement2.gust}</p>
+                    <p>Latitude: {selectedElement2.lat}</p>
+                    <p>Longitude: {selectedElement2.lng}</p>
+                  </div>
+                </InfoWindow>
+              ) : null}
               {selectedElement ? (
                 <InfoWindow
                   visible={showInfoWindow}

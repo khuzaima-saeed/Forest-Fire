@@ -12,6 +12,17 @@ import React, { useState } from "react";
     var temp = locations["locations"][0]
     var temp2 = locations["locations"][0]
     var temp3 = locations["locations"][1]
+    const handleClick = async (mapProps, map, event) => {
+      const lat = await event.latLng.lat();
+      const lng = await event.latLng.lng();
+      await fetch("http://localhost:8000/runforefire" , {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({lat, lng})
+      })
+    };
     if (temp === undefined) {
         return (
           <div style={{ height: '50vh', width: '100%' }}>
@@ -28,6 +39,7 @@ import React, { useState } from "react";
                 lng: 74.35
               }}
               zoom={5}
+              onClick={handleClick}
             >
               {Object.values(temp2).map((value, index) => {
                 if (((value[0] > 34.05) || (value[0] < 23.35)) || ((value[1] > 74.5) || (value[1] < 60.5))) {
@@ -126,8 +138,8 @@ import React, { useState } from "react";
           </div>
         );
     }
-   };
-   
+    };
+    
 export default GoogleApiWrapper({
     apiKey: "AIzaSyAghkx61FRH1BREoHHWjMI64pZcCiL56SU",
 })(Map2);

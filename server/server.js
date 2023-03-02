@@ -6,6 +6,8 @@ app.use(cors())
 const fs = require('fs');
 const path = require("path");
 
+app.use(express.json())
+
 const { spawn } = require('child_process');
 app.get("/readFile", (req, res) => {
   fs.readFile("../public/sample.txt", "utf8", (err, data) => {
@@ -17,8 +19,34 @@ app.get("/readFile", (req, res) => {
   });
 });
 
+app.get("/readgeojson", (req, res) => {
+  fs.readFile("../firefront/examples/aullene/firespread.geojson", "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send({ error: "An error occurred while reading the file." });
+    } else {
+      res.send(data);
+    }
+  });
+});
+
+app.post('/runforefire', (req, res) => {
+  const {lat, lng} = req.body
+  const script = spawn('python3', ['../firefront/py3_tools/coord_to_ff.py',
+  '--lat=' + lat,
+  '--lon=' + lng]);
+
+  script.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  script.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+    res.sendStatus(200);
+  });
+});
+
 app.get('/runscript', (req, res) => {
-  const script = spawn('python', ['script1.py']);
+  const script = spawn('python3', ['script1.py']);
 
   script.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);

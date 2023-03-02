@@ -41,7 +41,7 @@ const MyComponent = () => {
     const options = {
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': 'b7a0804d9fmshbbc6d539b876283p11c6a8jsndf06f23581cc',
+        'X-RapidAPI-Key': 'b45d82676dmsh1ee2897c2bd595bp14a999jsncc48793671e4',
         'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
       }
     };
@@ -52,8 +52,8 @@ const MyComponent = () => {
         .catch(err => console.error(err));
       windData[i]["lat"] = loc1[i].lat
       windData[i]["lng"] = loc1[i].lng
-   }
-   return windData;
+    }
+  return windData;
   }
 
   function handleFile (file) {
@@ -104,21 +104,6 @@ const MyComponent = () => {
     setData2([coords,val2])
   }
 
-  // const setCoords2 = () => {
-  //   dataPred.map((row, index) => (
-  //     coords2[index] = [row.latitude, row.longitude]
-  //   ))
-  //   const len = Object.keys(coords2).length;
-  //   for (let i = 0; i < len; i++){
-  //     let num = Number(coords2[i][0]);
-  //     let num2 = Number(coords2[i][1]);
-  //     coords2[i][0] = num 
-  //     coords2[i][1] = num2
-  //   }
-  //   delete coords2[len-(len+1)] 
-  //   setPredData2(coords2)
-  // }
-
   const myfunc = async (res) => {
     if (!res) return;
     else {
@@ -135,13 +120,11 @@ const MyComponent = () => {
     }
   }
 
-  function handleChange (e) {
-    const fileReader = new FileReader();
-    fileReader.readAsText(e.target.files[0], "UTF-8");
-    fileReader.onload = e => {
-      let obj = JSON.parse(e.target.result)
-      setFiles(obj);
-    };
+  const handleChange = async () => {
+    let response = await fetch("http://localhost:8000/readgeojson");
+    let data = await response.json();
+    data = data.features[0].geometry.coordinates[0]
+    setFiles(data);
   };
 
   const showPredData = () => {
@@ -149,8 +132,7 @@ const MyComponent = () => {
   }
 
   function showFiles () {
-      let temp = files["features"][0]["geometry"]["coordinates"][0]
-      setFiles2(temp)
+      setFiles2(files)
   }
 
   const changeText = () => {
@@ -160,10 +142,6 @@ const MyComponent = () => {
 
   const changeText2 = () => {
     document.getElementById('label-text2').innerHTML = 'GeoJSON File Uploaded';
-  }
-
-  const changeText3 = () => {
-    document.getElementById('label-text3').innerHTML = 'CSV File Uploaded';
   }
 
   const changeText4 = () => {
@@ -177,20 +155,13 @@ const MyComponent = () => {
   } 
 
   const oneFunc  = async () => {
-    await fetchWeather();
+    await handleClick();
   }
 
   const twoFunc  = (e) => {
     handleChange(e);
     changeText2();
   }
-
-  const threeFunc  = (e) => {
-    myfunc2(e);
-    changeText3();
-  }
-
-  // window.onload = handleClick();
 
   return (
     <div>
@@ -218,9 +189,9 @@ const MyComponent = () => {
             </div>
           </div>
           <div className='column'>
-          <input type="file" id='files2' className='hidden' style={{display:'none'}} onChange={twoFunc} />
+          <button type="file" id='files2' className='hidden' style={{display:'none'}} onClick={twoFunc} />
             <div className='input-file'>
-              <label id='label-text2' htmlFor="files2">Upload your GeoJSON File here</label>
+              <label id='label-text2' htmlFor="files2">Fetch GeoJSON</label>
             </div>
             <div className='button-div'>
               <button onClick={showFiles}>Load Spread On Map</button>
@@ -229,19 +200,6 @@ const MyComponent = () => {
               <SimpleMap locations={files2}/>
             </div>
           </div>
-          {/* <div className='column'>
-          <input type="file" id='files3' className='hidden' style={{display:'none'}} onChange={threeFunc}/>
-              <div className='input-file'>
-                <label id='label-text3' htmlFor="files3">Upload your CSV File here</label>
-              </div>
-            <div className='button-div'>
-              <button onClick={setCoords2}>Load Predictions on Map</button>
-              <button onClick={showPredData}>Show Pred Data</button>
-            </div>
-            <div className='map-div'>
-               <Map locations={dataPred2}/> 
-            </div>
-          </div> */}
         </div>
     </div>
   );

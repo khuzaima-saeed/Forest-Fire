@@ -41,7 +41,7 @@ const MyComponent = () => {
     const options = {
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': 'b45d82676dmsh1ee2897c2bd595bp14a999jsncc48793671e4',
+        'X-RapidAPI-Key': '2c9f42ee3emshbda2a32b2d3b56dp126992jsnd814ddcf8505',
         'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
       }
     };
@@ -188,7 +188,7 @@ const MyComponent = () => {
               <Map2 locations={data2}/>
             </div>
           </div>
-          <div className='column'>
+          {/* <div className='column'>
           <button type="file" id='files2' className='hidden' style={{display:'none'}} onClick={twoFunc} />
             <div className='input-file'>
               <label id='label-text2' htmlFor="files2">Fetch GeoJSON</label>
@@ -199,7 +199,7 @@ const MyComponent = () => {
             <div className='map-div'>
               <SimpleMap locations={files2}/>
             </div>
-          </div>
+          </div> */}
         </div>
     </div>
   );

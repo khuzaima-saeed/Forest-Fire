@@ -21,7 +21,7 @@ const SimpleMap = (locations) => {
         url += "firedept.png";
         return (
             <div style={{ height: '50vh', width: '100%' }}>
-            <Map style={{ height: '50%', width: '50%' }}
+            <Map style={{ height: '100%', width: '100%' }}
                 google={google}
                 initialCenter={{
                     lat: temp2[0].lat, 

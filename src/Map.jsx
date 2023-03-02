@@ -1,6 +1,8 @@
 /* eslint-disable*/
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import React, { useState } from "react";
+import SimpleMap from './SpreadMap';
+import Popup from './Popup';
 
   const Map2 = (locations) => {
     const [selectedElement, setSelectedElement] = useState(null);
@@ -9,9 +11,15 @@ import React, { useState } from "react";
     const [selectedElement2, setSelectedElement2] = useState(null);
     const [activeMarker2, setActiveMarker2] = useState(null);
     const [showInfoWindow2, setInfoWindowFlag2] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [files, setFiles] = useState("");
+    const [startingLoc, setStartingLoc] = useState([]);
     var temp = locations["locations"][0]
     var temp2 = locations["locations"][0]
     var temp3 = locations["locations"][1]
+    const togglePopup = () => {
+      setIsOpen(!isOpen);
+    }
     const handleClick = async (mapProps, map, event) => {
       const lat = await event.latLng.lat();
       const lng = await event.latLng.lng();
@@ -22,6 +30,12 @@ import React, { useState } from "react";
         },
         body: JSON.stringify({lat, lng})
       })
+      let response = await fetch("http://localhost:8000/readgeojson");
+      let data = await response.json();
+      data = data.features[0].geometry.coordinates[0]
+      setFiles(data);
+      setStartingLoc([lat,lng]);
+      togglePopup();
     };
     if (temp === undefined) {
         return (
@@ -32,7 +46,8 @@ import React, { useState } from "react";
     else {
         return (
           <div>
-            <Map style={{ height: '50%', width: '50%' }}
+            <div>
+            <Map style={{ height: '100%', width: '100%' }}
               google={google}
               initialCenter={{
                 lat: 31.5,
@@ -135,6 +150,15 @@ import React, { useState } from "react";
                 </InfoWindow>
               ) : null}
             </Map>
+          </div>
+          {isOpen && files && startingLoc && 
+            <Popup
+              content = {<>
+                  <SimpleMap locations = {files}/>
+              </>}
+              handleClose={togglePopup}
+            />
+          }
           </div>
         );
     }

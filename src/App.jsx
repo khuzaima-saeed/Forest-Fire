@@ -38,20 +38,14 @@ const MyComponent = () => {
       lat : 34.5006,
       lng : 72.8917
     }]
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': '2c9f42ee3emshbda2a32b2d3b56dp126992jsnd814ddcf8505',
-        'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
-      }
-    };
     for(let i = 0; i < loc1.length; i++){
-      await fetch(`https://open-weather13.p.rapidapi.com/city/latlon/${loc1[i].lat}/${loc1[i].lng}`, options)
+      await fetch(`http://api.weatherapi.com/v1/current.json?key=d887b45deea74d9fbde103640230703&q=${loc1[i].lat},${loc1[i].lng}`)
         .then(response => response.json())
-        .then(response => windData.push(response.wind))
+        .then(response => windData.push(response.current))
         .catch(err => console.error(err));
       windData[i]["lat"] = loc1[i].lat
       windData[i]["lng"] = loc1[i].lng
+      console.log(i, "value", windData)
     }
   return windData;
   }
@@ -112,14 +106,6 @@ const MyComponent = () => {
     }
   }
 
-  const myfunc2 = async (e) => {
-    if (!e.target.files) return;
-    else {
-      let temp = await handleFile2(e.target.files[0])
-      setPredData(temp)
-    }
-  }
-
   const handleChange = async () => {
     let response = await fetch("http://localhost:8000/readgeojson");
     let data = await response.json();
@@ -158,11 +144,6 @@ const MyComponent = () => {
     await handleClick();
   }
 
-  const twoFunc  = (e) => {
-    handleChange(e);
-    changeText2();
-  }
-
   return (
     <div>
       {isOpen && <Popup
@@ -188,18 +169,6 @@ const MyComponent = () => {
               <Map2 locations={data2}/>
             </div>
           </div>
-          {/* <div className='column'>
-          <button type="file" id='files2' className='hidden' style={{display:'none'}} onClick={twoFunc} />
-            <div className='input-file'>
-              <label id='label-text2' htmlFor="files2">Fetch GeoJSON</label>
-            </div>
-            <div className='button-div'>
-              <button onClick={showFiles}>Load Spread On Map</button>
-            </div>
-            <div className='map-div'>
-              <SimpleMap locations={files2}/>
-            </div>
-          </div> */}
         </div>
     </div>
   );

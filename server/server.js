@@ -31,7 +31,7 @@ app.get("/readgeojson", (req, res) => {
 
 app.post('/runforefire', (req, res) => {
   const {lat, lng} = req.body
-  const script = spawn('python3', ['../firefront/py3_tools/coord_to_ff.py',
+  const script = spawn('python3', ['../firefront/py3_tools/multi_geojson_generator.py',
   '--lat=' + lat,
   '--lon=' + lng]);
 

@@ -88,7 +88,7 @@ import Popup from './Popup';
                   fillColor: "blue",
                   fillOpacity: 0.6,
                   strokeWeight: 0,
-                  rotation: value.deg,
+                  rotation: value.wind_degree,
                   scale: 3,
                   anchor: new google.maps.Point(0, 20),
                 };
@@ -116,9 +116,9 @@ import Popup from './Popup';
                   }}
                 >
                   <div>
-                    <p>Wind Speed: {selectedElement2.speed}</p>
-                    <p>Wind Direction: {selectedElement2.deg}</p>
-                    <p>Wind Gust: {selectedElement2.gust}</p>
+                    <p>Wind Speed: {selectedElement2.wind_kph}</p>
+                    <p>Wind Direction: {selectedElement2.wind_degree}</p>
+                    <p>Wind Gust: {selectedElement2.gust_kph}</p>
                     <p>Latitude: {selectedElement2.lat}</p>
                     <p>Longitude: {selectedElement2.lng}</p>
                   </div>

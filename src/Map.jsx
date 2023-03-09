@@ -3,6 +3,7 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import React, { useState } from "react";
 import SimpleMap from './SpreadMap';
 import Popup from './Popup';
+import './map.css';
 
   const Map2 = (locations) => {
     const [selectedElement, setSelectedElement] = useState(null);
@@ -13,6 +14,10 @@ import Popup from './Popup';
     const [showInfoWindow2, setInfoWindowFlag2] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [files, setFiles] = useState("");
+    const [files2, setFiles2] = useState("");
+    const [files3, setFiles3] = useState("");
+    const [files4, setFiles4] = useState("");
+    const [files5, setFiles5] = useState("");
     const [startingLoc, setStartingLoc] = useState([]);
     var temp = locations["locations"][0]
     var temp2 = locations["locations"][0]
@@ -31,9 +36,25 @@ import Popup from './Popup';
         body: JSON.stringify({lat, lng})
       })
       let response = await fetch("http://localhost:8000/readgeojson");
+      let response2 = await fetch("http://localhost:8000/readgeojson2");
+      let response3 = await fetch("http://localhost:8000/readgeojson3");
+      let response4 = await fetch("http://localhost:8000/readgeojson4");
+      let response5 = await fetch("http://localhost:8000/readgeojson5");
       let data = await response.json();
+      let data2 = await response2.json();
+      let data3 = await response3.json();
+      let data4 = await response4.json();
+      let data5 = await response5.json();
       data = data.features[0].geometry.coordinates[0]
+      data2 = data2.features[0].geometry.coordinates[0]
+      data3 = data3.features[0].geometry.coordinates[0]
+      data4 = data4.features[0].geometry.coordinates[0]
+      data5 = data5.features[0].geometry.coordinates[0]
       setFiles(data);
+      setFiles2(data2);
+      setFiles3(data3);
+      setFiles4(data4);
+      setFiles5(data5);
       setStartingLoc([lat,lng]);
       togglePopup();
     };
@@ -152,9 +173,30 @@ import Popup from './Popup';
             </Map>
           </div>
           {isOpen && files && startingLoc && 
-            <Popup
+            <Popup className="popup"
               content = {<>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{widht:'20vh', height:'20vh', justifyContent: "center"}}>
+                  Hour 1
                   <SimpleMap locations = {files}/>
+                </div>
+                <div>
+                  Hour 2
+                  <SimpleMap locations = {files2}/>
+                </div>
+                <div>
+                  Hour 3
+                  <SimpleMap locations = {files3}/>
+                </div>
+                <div>
+                  Hour 4
+                  <SimpleMap locations = {files4}/>
+                </div>
+                <div>
+                  Hour 5
+                  <SimpleMap locations = {files5}/>
+                </div>
+              </div>
               </>}
               handleClose={togglePopup}
             />

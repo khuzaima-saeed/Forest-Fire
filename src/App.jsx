@@ -108,9 +108,21 @@ const MyComponent = () => {
 
   const handleChange = async () => {
     let response = await fetch("http://localhost:8000/readgeojson");
+    let response2 = await fetch("http://localhost:8000/readgeojson2");
+    let response3 = await fetch("http://localhost:8000/readgeojson3");
+    let response4 = await fetch("http://localhost:8000/readgeojson4");
+    let response5 = await fetch("http://localhost:8000/readgeojson5");
     let data = await response.json();
+    let data2 = await response2.json();
+    let data3 = await response3.json();
+    let data4 = await response4.json();
+    let data5 = await response5.json();
     data = data.features[0].geometry.coordinates[0]
-    setFiles(data);
+    data2 = data2.features[0].geometry.coordinates[0]
+    data3 = data3.features[0].geometry.coordinates[0]
+    data4 = data4.features[0].geometry.coordinates[0]
+    data5 = data5.features[0].geometry.coordinates[0]
+    setFiles([data,data2,data3,data4,data5]);
   };
 
   const showPredData = () => {

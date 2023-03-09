@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Map, GoogleApiWrapper, Polygon, Marker} from "google-maps-react";
+import './SpreadMap.css'
 
 const SimpleMap = (locations) => {
     let temp = locations["locations"]
@@ -20,15 +21,15 @@ const SimpleMap = (locations) => {
         let url = "http://maps.google.com/mapfiles/ms/icons/";
         url += "firedept.png";
         return (
-            <div style={{ height: '50vh', width: '100%' }}>
-            <Map style={{ height: '100%', width: '100%' }}
+            <div style={{ height: '100vh', width: '27vh' }}>
+            <Map style={{ height: 'auto', width: 'auto'}}
                 google={google}
                 initialCenter={{
                     lat: temp2[0].lat, 
                     lng: temp2[0].lng
                 }}
                 defaultCenter={{ lat: temp2[0].lat, lng: temp2[0].lng}}
-                defaultZoom={2}
+                defaultZoom={1}
             >
             <Marker
                 position = {{
